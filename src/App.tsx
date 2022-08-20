@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import { AddTravelLog } from "./pages/AddTravelLog";
+import { Header } from "./components/Header";
+import { Home } from "./pages/Home";
+import NavBar from "./components/NavBar";
+import Profile from "./pages/Profile";
+import routes from "./routes";
+import { initialState, reducer } from "./store";
+import { useReducer } from "react";
+
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <div className="container text-gray-600 min-h-screen max-w-[780px] mx-auto">
+        <main className="overflow-auto pb-[80px] p-5">
+          <Routes>
+            <Route path={routes.HOME} element={<Home logs={state} dispatch={dispatch} />} />
+            <Route path={routes.ADD_TRAVEL_LOG} element={<AddTravelLog />} />
+            <Route path={routes.PROFILE} element={<Profile />} />
+          </Routes>
+        </main>
+      </div>
+      <NavBar />
+    </>
   );
 }
 
