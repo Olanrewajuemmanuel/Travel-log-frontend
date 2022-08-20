@@ -4,20 +4,21 @@ interface Props {
     likes: number;
     visited: boolean;
     feedId: number | string;
+    userLiked: boolean;
     dispatchFn: React.Dispatch<LogAction>;
 }
 
-export const Engagement = ({ likes, visited, feedId, dispatchFn }: Props) => {
+export const Engagement = ({ likes, visited, feedId, userLiked, dispatchFn }: Props) => {
   return (
-    <div className="flex items-center justify-between py-3">
-      <div className="like">
+    <div className="flex items-center justify-between pt-3">
+      <div className="like" onClick={() => dispatchFn({ type: LogActionType.LIKE, payload: { id: feedId } })}>
         <button className="inline-flex">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 mr-2"
-            fill="none"
+            fill={`${userLiked ? "#b60404" : "none"}`}
             viewBox="0 0 24 24"
-            stroke="currentColor"
+            stroke={`${userLiked ? "none" : "currentColor"}`}
             stroke-width="2"
           >
             <path
@@ -34,7 +35,7 @@ export const Engagement = ({ likes, visited, feedId, dispatchFn }: Props) => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 mr-3"
-            fill={`${visited ? 'bg-red-600' : 'none'}`}
+            fill={`${visited ? '#5957da' : 'none'}`}
             viewBox="0 0 24 24"
             stroke={`${visited ? 'none' : 'currentColor'}`}
             stroke-width="2"

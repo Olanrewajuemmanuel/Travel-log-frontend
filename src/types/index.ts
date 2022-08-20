@@ -11,11 +11,13 @@ export interface TravelLog {
   caption?: string;
   likes: number;
   visited: boolean;
+  userhasLikedFeed: boolean;
 }
 
 export type TravelLogState = Array<TravelLog>
 export enum LogActionType {
-  BOOKMARK = "BOOKMARK"
+  BOOKMARK = "BOOKMARK",
+  LIKE = "LIKE",
 }
 
 export interface LogAction {
