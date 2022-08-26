@@ -3,15 +3,14 @@ import { Feed } from "../components/Feed"
 
 interface Props {
   logs: Array<TravelLog>;
-  dispatch: React.Dispatch<LogAction>;
 }
 
-export const Home: React.FC<Props> = ({ logs, dispatch }) => {
+export const Home: React.FC<Props> = ({ logs }) => {
   return (
     <div className="md:flex justify-center items-center flex-col">
       {
         logs.map((log, index) => 
-          <Feed key={index} log={log} dispatch={dispatch} />
+          <Feed key={index} log={log} />
         )
       }
     </div>

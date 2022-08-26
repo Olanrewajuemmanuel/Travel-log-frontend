@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 interface Props {
   log: TravelLog;
-  dispatch: React.Dispatch<LogAction>;
 
 }
 const widthVariant = {
@@ -38,7 +37,7 @@ function displayStar(id: number) {
   );
 }
 
-export const Feed: React.FC<Props> = ({ log, dispatch }) => {
+export const Feed: React.FC<Props> = ({ log }) => {
   var images =
     log.imgSet &&
     log.imgSet.map((img) => (
@@ -97,7 +96,7 @@ export const Feed: React.FC<Props> = ({ log, dispatch }) => {
           </motion.span>
         </motion.span>
       </div>
-      <Engagement likes={log.likes} visited={log.visited} feedId={log.id} userLiked={log.userhasLikedFeed} dispatchFn={dispatch} />
+      <Engagement likes={log.likes} visited={log.visited} feedId={log.id} userLiked={log.userhasLikedFeed} />
       <p>{Array.from(Array(log.rating)).map((_, index) => displayStar(index))}</p>
       <p className="mb-5">{log.caption}</p>
       <p>Comment Section</p>

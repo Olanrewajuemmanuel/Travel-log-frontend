@@ -5,13 +5,12 @@ interface Props {
     visited: boolean;
     feedId: number | string;
     userLiked: boolean;
-    dispatchFn: React.Dispatch<LogAction>;
 }
 
-export const Engagement = ({ likes, visited, feedId, userLiked, dispatchFn }: Props) => {
+export const Engagement = ({ likes, visited, feedId, userLiked }: Props) => {
   return (
     <div className="flex items-center justify-between pt-3">
-      <div className="like" onClick={() => dispatchFn({ type: LogActionType.LIKE, payload: { id: feedId } })}>
+      <div className="like">
         <button className="inline-flex">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +30,7 @@ export const Engagement = ({ likes, visited, feedId, userLiked, dispatchFn }: Pr
         </button>
       </div>
       <div className="visited">
-        <button className="inline-flex" onClick={(() => dispatchFn({ type: LogActionType.BOOKMARK, payload: { id: feedId } }))}>
+        <button className="inline-flex">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 mr-3"
