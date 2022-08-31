@@ -10,9 +10,8 @@ const Login = () => {
     signedIn: false,
   });
   const [errors, setErrors] = useState({ message: "" });
-  const [registerSuccess, setRegisterSuccess] = useState({
+  const [loginSuccess, setLoginSuccess] = useState({
     token: "",
-    refreshToken: "",
     user: {
       id: "",
       username: "",
@@ -37,14 +36,14 @@ const Login = () => {
     }
     axios({
       method: "post",
-      url: "http://localhost:4000/user/login",
+      url: "/user/login",
       data: {
         userOrEmail: userOrEmail,
         password: password,
       },
       signal: controller.signal
     }).then((res) => {
-      console.log(res.data);
+      setLoginSuccess(res.data)
       
     }).catch(err => {
       setErrors(err.response.data);
@@ -53,9 +52,7 @@ const Login = () => {
   };
 
   // redirect user if token is set
-  if (registerSuccess.token) {
- 
-    return <Navigate to={routes.HOME} />}
+  if (loginSuccess.token) return <Navigate to={routes.HOME} />
   return (
     <div>
       {errors.message && (
