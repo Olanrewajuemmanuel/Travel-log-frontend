@@ -95,7 +95,6 @@ const RegisterUser = () => {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.error(err.response.data);
         setErrors(err.response.data);
         setIsLoading(false);
       });
