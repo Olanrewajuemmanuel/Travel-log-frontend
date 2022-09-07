@@ -2,10 +2,11 @@ export type User = {
   username: string;
 };
 export interface TravelLog {
-  user: User;
-  id: number | string;
+  _v: number
+  _id: number | string;
+  userId: string;
   imgSet?: string[];
-  dateModified: Date;
+  dateModified: string;
   rating: number;
   location: string;
   caption?: string;
@@ -14,15 +15,26 @@ export interface TravelLog {
   userhasLikedFeed: boolean;
 }
 
-export type TravelLogState = Array<TravelLog>
+export type TravelLogState = Array<TravelLog>;
 export enum LogActionType {
   BOOKMARK = "BOOKMARK",
   LIKE = "LIKE",
+  UPD_STORE = "UPD_STORE",
 }
 
 export interface LogAction {
   type: LogActionType;
   payload: {
-    id: number | string;
-  }
+    id?: number | string;
+    feeds?: TravelLogState;
+  };
+}
+
+export interface UserInfo {
+  token: string;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+  };
 }

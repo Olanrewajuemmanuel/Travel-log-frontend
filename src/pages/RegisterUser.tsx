@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { Link, Navigate, Route } from "react-router-dom"
+import { useCookies } from "react-cookie";
+import { Link, Navigate } from "react-router-dom";
 import routes from "../routes";
+import { UserInfo } from "../types";
 
 interface Form {
   username?: string;
@@ -14,6 +16,7 @@ interface Form {
 }
 
 const RegisterUser = () => {
+  const [cookies] = useCookies(["accessToken"])
   const [formData, setFormData] = useState<Form>({
     username: "",
     lastName: "",
@@ -27,20 +30,18 @@ const RegisterUser = () => {
   const [errors, setErrors] = useState({
     message: "",
   });
-  const [registerSuccess, setRegisterSuccess] = useState({
+  const [registerSuccess, setRegisterSuccess] = useState<UserInfo>({
     token: "",
-    refreshToken: "",
     user: {
       id: "",
       username: "",
       email: "",
     },
   });
-
-  // redirect user if token is set
-  if (registerSuccess.token) {
- 
-    return <Navigate to={routes.HOME} />}
+  // redirect user after login
+  if (cookies.accessToken) {
+    return <Navigate to={routes.HOME} />;
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // update username suggestion
@@ -75,7 +76,7 @@ const RegisterUser = () => {
 
     axios({
       method: "post",
-      url: "http://localhost:4000/user/register",
+      url: "/user/register",
       data: {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -224,7 +225,12 @@ const RegisterUser = () => {
           {isLoading ? "Loading..." : "Submit"}
         </button>
       </form>
-      <p className="mt-3">Already signed up? <Link to={routes.LOGIN}><b className="text-blue-500 underline">Login</b></Link></p>
+      <p className="mt-3">
+        Already signed up?{" "}
+        <Link to={routes.LOGIN}>
+          <b className="text-blue-500 underline">Login</b>
+        </Link>
+      </p>
     </div>
   );
 };

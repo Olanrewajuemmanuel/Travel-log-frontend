@@ -1,16 +1,21 @@
 import axios from "axios";
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useCookies, withCookies } from "react-cookie";
 import { Link, Navigate } from "react-router-dom";
 import routes from "../routes";
+import { UserInfo } from "../types";
 
-const Login = () => {
+
+
+
+const Login = ({ cookies }: any) => {
   const [formData, setFormData] = useState({
     userOrEmail: "",
     password: "",
     signedIn: false,
   });
   const [errors, setErrors] = useState({ message: "" });
-  const [loginSuccess, setLoginSuccess] = useState({
+  const [loginSuccess, setLoginSuccess] = useState<UserInfo>({
     token: "",
     user: {
       id: "",
@@ -18,6 +23,15 @@ const Login = () => {
       email: "",
     },
   });
+
+ 
+  // redirect user after login
+ if (cookies.get("accessToken")) { 
+  console.log(cookies.get("accessToken"));
+  
+  return <Navigate to={routes.HOME} />;
+} 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     if (target.type === "checkbox") {
@@ -29,7 +43,7 @@ const Login = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const { userOrEmail, password } = formData;
-    var controller = new AbortController()
+    var controller = new AbortController();
     if (!userOrEmail || !password) {
       setErrors({ message: "Please fill the required fields" });
       return;
@@ -41,18 +55,18 @@ const Login = () => {
         userOrEmail: userOrEmail,
         password: password,
       },
-      signal: controller.signal
-    }).then((res) => {
-      setLoginSuccess(res.data)
-      
-    }).catch(err => {
-      setErrors(err.response.data);
-      console.error(err)
-    });
+      signal: controller.signal,
+    })
+      .then((res) => {
+        setLoginSuccess(res.data);
+      })
+      .catch((err) => {
+        setErrors(err.response.data);
+      });
   };
 
-  // redirect user if token is set
-  if (loginSuccess.token) return <Navigate to={routes.HOME} />
+ 
+
   return (
     <div>
       {errors.message && (
@@ -117,4 +131,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withCookies(Login);

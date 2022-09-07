@@ -40,19 +40,19 @@ function displayStar(id: number) {
 export const Feed: React.FC<Props> = ({ log }) => {
   var images =
     log.imgSet &&
-    log.imgSet.map((img) => (
+    log.imgSet.map((img, index) => (
       <img
         className="w-full md:w-[500px] max-h-[500px]"
         src={img}
         alt={log.location}
-        key={log.id}
+        key={index.toString()}
       />
     ));
 
   return (
     <div className="p-3 max-w-[500px] my-6">
       <Link to="#">
-        <p className="mb-3 font-bold underline">{log.user.username}</p>
+        <p className="mb-3 font-bold underline">{log.userId}</p>
       </Link>
       <div className="carousel relative">
         {images}
@@ -96,7 +96,7 @@ export const Feed: React.FC<Props> = ({ log }) => {
           </motion.span>
         </motion.span>
       </div>
-      <Engagement likes={log.likes} visited={log.visited} feedId={log.id} userLiked={log.userhasLikedFeed} />
+      <Engagement likes={log.likes} visited={log.visited} feedId={log._id} userLiked={log.userhasLikedFeed} />
       <p>{Array.from(Array(log.rating)).map((_, index) => displayStar(index))}</p>
       <p className="mb-5">{log.caption}</p>
       <p>Comment Section</p>
