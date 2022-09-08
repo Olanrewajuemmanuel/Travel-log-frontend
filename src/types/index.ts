@@ -4,6 +4,7 @@ export type User = {
 export interface TravelLog {
   _v: number
   _id: number | string;
+  username: string;
   userId: string;
   imgSet?: string[];
   dateModified: string;

@@ -5,9 +5,6 @@ import { Link, Navigate } from "react-router-dom";
 import routes from "../routes";
 import { UserInfo } from "../types";
 
-
-
-
 const Login = ({ cookies }: any) => {
   const [formData, setFormData] = useState({
     userOrEmail: "",
@@ -24,13 +21,8 @@ const Login = ({ cookies }: any) => {
     },
   });
 
- 
   // redirect user after login
- if (cookies.get("accessToken")) { 
-  console.log(cookies.get("accessToken"));
-  
-  return <Navigate to={routes.HOME} />;
-} 
+  if (cookies.get("accessToken")) return <Navigate to={routes.HOME} />;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
@@ -60,12 +52,14 @@ const Login = ({ cookies }: any) => {
       .then((res) => {
         setLoginSuccess(res.data);
       })
-      .catch((err) => {
+      .catch((err) => {    
+        if (err.response.code === 500) {
+          setErrors({ message: "Network Error, Please try again later." })
+          return
+        }
         setErrors(err.response.data);
       });
   };
-
- 
 
   return (
     <div>

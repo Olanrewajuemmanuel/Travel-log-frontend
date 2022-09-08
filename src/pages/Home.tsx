@@ -19,9 +19,8 @@ const Home: React.FC = ({ cookies }: any) => {
     };
     fetchData()
       .then((feeds) => {
-        // update store
-        console.log(feeds);
-        
+        // update store     
+       
         dispatch({ type: LogActionType.UPD_STORE, payload: { feeds } })
       })
       .catch(async (err) => {

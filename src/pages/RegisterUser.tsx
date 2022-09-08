@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { useCookies } from "react-cookie";
+import { useCookies, withCookies } from "react-cookie";
 import { Link, Navigate } from "react-router-dom";
 import routes from "../routes";
 import { UserInfo } from "../types";
@@ -15,8 +15,7 @@ interface Form {
   phone?: string;
 }
 
-const RegisterUser = () => {
-  const [cookies] = useCookies(["accessToken"])
+const RegisterUser = ({ cookies }: any) => {
   const [formData, setFormData] = useState<Form>({
     username: "",
     lastName: "",
@@ -39,9 +38,7 @@ const RegisterUser = () => {
     },
   });
   // redirect user after login
-  if (cookies.accessToken) {
-    return <Navigate to={routes.HOME} />;
-  }
+  if (cookies.get("accessToken")) return <Navigate to={routes.HOME} />;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // update username suggestion
@@ -71,7 +68,6 @@ const RegisterUser = () => {
     if (isLoading && controller) {
       // cancel request
       controller.abort();
-      console.log("Aborted");
     }
 
     axios({
@@ -235,4 +231,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default withCookies(RegisterUser);
