@@ -41,7 +41,7 @@ const Home: React.FC = ({ cookies }: any) => {
       <p>{ error.message ? error.message: '' }</p>
       {
         logs.map((log, index) => 
-          <Feed key={index} log={log} />
+          <Feed key={index} log={log} dispatchFn={dispatch} />
         )
       }
     </div>

@@ -1,17 +1,34 @@
+import { useReducer } from "react";
+import { initialState, reducer } from "../store";
 import { LogAction, LogActionType, TravelLogState } from "../types";
 
 interface Props {
-    likes: number;
-    visited: boolean;
-    feedId: number | string;
-    userLiked: boolean;
+  likes: number;
+  visited: boolean;
+  feedId: number | string;
+  userLiked: boolean;
+  dispatchFn: React.Dispatch<LogAction>;
 }
 
-export const Engagement = ({ likes, visited, feedId, userLiked }: Props) => {
+export const Engagement = ({
+  likes,
+  visited,
+  feedId,
+  userLiked,
+  dispatchFn,
+}: Props) => {
+  const [logs, dispatch] = useReducer(reducer, initialState);
+  console.log(initialState);
+
   return (
     <div className="flex items-center justify-between pt-3">
       <div className="like">
-        <button className="inline-flex">
+        <button
+          className="inline-flex"
+          onClick={() =>
+            dispatchFn({ type: LogActionType.LIKE, payload: { id: feedId } })
+          }
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 mr-2"
@@ -30,13 +47,18 @@ export const Engagement = ({ likes, visited, feedId, userLiked }: Props) => {
         </button>
       </div>
       <div className="visited">
-        <button className="inline-flex">
+        <button
+          className="inline-flex"
+          onClick={() =>
+            dispatchFn({ type: LogActionType.BOOKMARK, payload: { id: feedId } })
+          }
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 mr-3"
-            fill={`${visited ? '#5957da' : 'none'}`}
+            fill={`${visited ? "#5957da" : "none"}`}
             viewBox="0 0 24 24"
-            stroke={`${visited ? 'none' : 'currentColor'}`}
+            stroke={`${visited ? "none" : "currentColor"}`}
             stroke-width="2"
           >
             <path
