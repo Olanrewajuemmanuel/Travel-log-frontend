@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { useCookies, withCookies } from "react-cookie";
+import { withCookies } from "react-cookie";
 import { Link, Navigate } from "react-router-dom";
 import routes from "../routes";
 import { UserInfo } from "../types";
@@ -20,6 +20,7 @@ const Login = ({ cookies }: any) => {
       email: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false)
 
   // redirect user after login
   if (cookies.get("accessToken")) return <Navigate to={routes.HOME} />;
@@ -40,6 +41,14 @@ const Login = ({ cookies }: any) => {
       setErrors({ message: "Please fill the required fields" });
       return;
     }
+    setIsLoading(true);
+    var controller = new AbortController();
+    if (isLoading && controller) {
+      // cancel request
+      controller.abort();
+      setIsLoading(false)
+
+    }
     axios({
       method: "post",
       url: "/user/login",
@@ -51,13 +60,17 @@ const Login = ({ cookies }: any) => {
     })
       .then((res) => {
         setLoginSuccess(res.data);
+        setIsLoading(false)
       })
-      .catch((err) => {    
-        if (err.response.code === 500) {
+      .catch((err) => {  
+        console.log(err);
+          
+        if (err.code === "ERR_BAD_RESPONSE") {
           setErrors({ message: "Network Error, Please try again later." })
           return
         }
         setErrors(err.response.data);
+        setIsLoading(false)
       });
   };
 
@@ -110,9 +123,11 @@ const Login = ({ cookies }: any) => {
         </div>
         <button
           type="submit"
-          className={`px-3 py-2 bg-red-600 hover:bg-red-700 text-gray-100 rounded-lg`}
+          className={`px-3 py-2 bg-red-600 hover:bg-red-700 text-gray-100 rounded-lg ${
+            isLoading ? "disabled:opacity-0" : ""
+          }`}
         >
-          Submit
+          {isLoading ? "Loading..." : "Submit"}
         </button>
       </form>
       <p className="mt-3">

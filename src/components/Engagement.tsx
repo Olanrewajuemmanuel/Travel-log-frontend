@@ -17,9 +17,6 @@ export const Engagement = ({
   userLiked,
   dispatchFn,
 }: Props) => {
-  const [logs, dispatch] = useReducer(reducer, initialState);
-  console.log(initialState);
-
   return (
     <div className="flex items-center justify-between pt-3">
       <div className="like">

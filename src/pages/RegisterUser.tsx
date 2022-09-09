@@ -68,6 +68,7 @@ const RegisterUser = ({ cookies }: any) => {
     if (isLoading && controller) {
       // cancel request
       controller.abort();
+      setIsLoading(false)
     }
 
     axios({
