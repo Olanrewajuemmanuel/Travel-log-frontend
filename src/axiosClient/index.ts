@@ -22,8 +22,8 @@ axiosPrivate.interceptors.response.use(res => {
 }, async (error) => {
     const configOrigin = error.config
     if (configOrigin.url !== "/user/login" && configOrigin.url !== "/user/register" && error.response) {
-        // not register or login and error 500, retry token refresh
-        if (error.response.status === 500 && !configOrigin._retry) {
+        // not register or login and error 500, retry token refresh        
+        if (error.response.status === 500 && error.response.data.test(/jwt expired/)  && !configOrigin._retry) {
             configOrigin._retry = true
         try {
             const {token} = await (await axiosPrivate.post("user/refresh")).data
