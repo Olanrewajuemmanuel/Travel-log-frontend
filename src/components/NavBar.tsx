@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+
+
 const NavBar = () => {
   return (
     <div className="stay-at-bottom bg-gray-100">

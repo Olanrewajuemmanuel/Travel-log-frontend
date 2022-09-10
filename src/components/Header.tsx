@@ -8,7 +8,7 @@ interface LogOutResponse extends AxiosResponse {
   message: string;
 }
 
-const Header = ({ cookies }: any) => {
+const Header = ({ cookies, changeDisplayStatus }: any) => {
   const navigate = useNavigate();
   const logout = async () => {
     try {
@@ -16,6 +16,7 @@ const Header = ({ cookies }: any) => {
         await axiosClient.post("user/logout")
       ).data;
       if (message) {
+        changeDisplayStatus(false)
         return navigate(routes.LOGIN);
       }
     } catch (err) {

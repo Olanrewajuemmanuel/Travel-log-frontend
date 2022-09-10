@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useReducer, useState } from "react";
 import { withCookies } from "react-cookie";
 import { Link, Navigate } from "react-router-dom";
 import routes from "../routes";
@@ -23,7 +23,11 @@ const Login = ({ cookies }: any) => {
   const [isLoading, setIsLoading] = useState(false)
 
   // redirect user after login
-  if (cookies.get("accessToken")) return <Navigate to={routes.HOME} />;
+  if (cookies.get("accessToken")) {
+      return <Navigate to={routes.HOME} />;
+
+  }
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
@@ -42,7 +46,6 @@ const Login = ({ cookies }: any) => {
       return;
     }
     setIsLoading(true);
-    var controller = new AbortController();
     if (isLoading && controller) {
       // cancel request
       controller.abort();
@@ -63,10 +66,10 @@ const Login = ({ cookies }: any) => {
         setIsLoading(false)
       })
       .catch((err) => {  
-        console.log(err);
-          
+         
         if (err.code === "ERR_BAD_RESPONSE") {
           setErrors({ message: "Network Error, Please try again later." })
+          setIsLoading(false)
           return
         }
         setErrors(err.response.data);

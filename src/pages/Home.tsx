@@ -7,12 +7,18 @@ import routes from "../routes";
 import { Navigate } from "react-router-dom";
 import { withCookies } from "react-cookie";
 
-const Home: React.FC = ({ cookies }: any) => {
+interface Props {
+  changeDisplayStatus: React.Dispatch<React.SetStateAction<boolean>>
+  cookies: any
+}
+
+const Home = ({ cookies, changeDisplayStatus }: Props) => {
   const [error, setError] = useState({
     message: ''
   })
   const [logs, dispatch] = useReducer(reducer, initialState)
   useEffect(() => {
+    changeDisplayStatus(true) // display nav
     const fetchData = async () => {
       const feeds = await (await axiosPrivate.get("/feed")).data;
       return Promise.resolve(feeds);
@@ -35,6 +41,7 @@ const Home: React.FC = ({ cookies }: any) => {
         // clean up
       }
   }, []);
+  
   if (!cookies.get("accessToken")) return <Navigate to={routes.LOGIN} />
   return (
     <div className="md:flex justify-center items-center flex-col">
