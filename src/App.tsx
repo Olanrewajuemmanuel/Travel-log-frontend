@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { AddTravelLog } from "./pages/AddTravelLog";
+import AddTravelLog from "./pages/AddTravelLog";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
