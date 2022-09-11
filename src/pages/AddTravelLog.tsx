@@ -1,8 +1,7 @@
 import axios from "axios";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { withCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { axiosPrivate } from "../axiosClient";
 import routes from "../routes";
 interface NewFeedInterface {
   images?: FileList;
@@ -19,22 +18,34 @@ const AddTravelLog = ({ cookies }: any) => {
     caption: "",
     rating: "",
   });
+  const [feedErrors, setFeedErrors] = useState({ message: "" });
   const navigate = useNavigate();
 
   if (!cookies.get("accessToken")) navigate(routes.LOGIN);
 
+
+  useEffect(() => {
+    window.scroll(0, 0)
+  
+  }, [feedErrors.message])
+  
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(newFeed);
+    const { location, rating, caption } = newFeed
+    if (!location || !rating || !caption) {
+      setFeedErrors({ message: "Please fill out all required fields." })
+      return
+    }
 
     const formData = new FormData();
 
-    formData.append("location", newFeed.location as string);
-    formData.append("rating", newFeed.rating as string);
-    formData.append("caption", newFeed.caption as string);
+    formData.append("location", location as string);
+    formData.append("rating", rating as string);
+    formData.append("caption", caption as string);
     for (let i = 0; i < (newFeed.images as FileList).length; i++) {
       formData.append("images", (newFeed as any).images[i]);
     }
+    
 
     axios
       .post("/feed/create", formData, {
@@ -42,11 +53,31 @@ const AddTravelLog = ({ cookies }: any) => {
           "Content-Type": "application/json",
         },
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+      .then((res) => {
+        if (res.status === 201) { //created
+          navigate(routes.HOME, { replace: true })
+        }
+        
+      })
+      .catch((err) => {
+        // Error: File must be of type jpg, jpeg or png
+        if (
+          err.response.status === 500 &&
+          /Error: File must be of type jpg, jpeg or png/.test(err.response.data)
+        ) {
+          setFeedErrors({
+            message: "Error: File must be of type jpg, jpeg or png",
+          });
+        }
+      });
   };
   return (
     <div>
+      {feedErrors.message && (
+        <p className="p-3 md:w-1/5 bg-red-200 rounded-md text-gray-600">
+          {feedErrors.message}
+        </p>
+      )}
       <h1 className="text-2xl font-medium mb-5">
         Tell people about your travels
       </h1>
@@ -75,7 +106,7 @@ const AddTravelLog = ({ cookies }: any) => {
                 d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
               />
             </svg>
-            {fileArray
+            {fileArray.length
               ? fileArray.map((file) => (
                   <b className="inline-block mr-2 underline">{file.name}</b>
                 ))
