@@ -37,7 +37,7 @@ const Profile = () => {
   if (error.message) return <h1>User not found</h1>;
   return (
     <div className="max-w-[600px] mx-auto">
-      <div className="flex space-x-16 mx-auto select-none">
+      <div className="flex space-x-16 mx-auto select-none items-center">
         <div className="profile-pic">
           <img
             src={profile}
