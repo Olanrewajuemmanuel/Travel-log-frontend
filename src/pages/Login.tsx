@@ -20,14 +20,13 @@ const Login = ({ cookies }: any) => {
       email: "",
     },
   });
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   // redirect user after login
   if (cookies.get("accessToken")) {
-      return <Navigate to={routes.HOME} />;
-
+    localStorage.setItem("currentUser", loginSuccess.user.username);
+    return <Navigate to={routes.HOME} />;
   }
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
@@ -49,8 +48,7 @@ const Login = ({ cookies }: any) => {
     if (isLoading && controller) {
       // cancel request
       controller.abort();
-      setIsLoading(false)
-
+      setIsLoading(false);
     }
     axios({
       method: "post",
@@ -63,17 +61,16 @@ const Login = ({ cookies }: any) => {
     })
       .then((res) => {
         setLoginSuccess(res.data);
-        setIsLoading(false)
+        setIsLoading(false);
       })
-      .catch((err) => {  
-         
+      .catch((err) => {
         if (err.code === "ERR_BAD_RESPONSE") {
-          setErrors({ message: "Network Error, Please try again later." })
-          setIsLoading(false)
-          return
+          setErrors({ message: "Network Error, Please try again later." });
+          setIsLoading(false);
+          return;
         }
         setErrors(err.response.data);
-        setIsLoading(false)
+        setIsLoading(false);
       });
   };
 

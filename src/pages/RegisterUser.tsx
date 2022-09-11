@@ -38,7 +38,9 @@ const RegisterUser = ({ cookies }: any) => {
     },
   });
   // redirect user after login
-  if (cookies.get("accessToken")) return <Navigate to={routes.HOME} />;
+  if (cookies.get("accessToken")) {
+    localStorage.setItem("currentUser", registerSuccess.user.username)
+    return <Navigate to={routes.HOME} />;}
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // update username suggestion

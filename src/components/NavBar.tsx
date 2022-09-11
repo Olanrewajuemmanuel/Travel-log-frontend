@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 
 const NavBar = () => {
+  const currentUser = localStorage.getItem("currentUser")
   return (
     <div className="stay-at-bottom bg-gray-100">
       <div className="p-2 flex justify-between">
@@ -38,7 +39,7 @@ const NavBar = () => {
           </button>
         </Link>
 
-        <Link to="/profile">
+        <Link to={`/profile/${currentUser}`}>
           <button className="block p-2 hover:bg-gray-200 rounded-full hover:rounded-full hover:scale-[1.1] transition ease-out">
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -52,7 +52,7 @@ export const Feed: React.FC<Props> = ({ log, dispatchFn }) => {
 
   return (
     <div className="p-3 max-w-[500px] my-6">
-      <Link to="#">
+      <Link to={`/profile/${log.username}`}>
         <p className="mb-3 font-bold underline">{log.username}</p>
       </Link>
       <div className="carousel relative">
