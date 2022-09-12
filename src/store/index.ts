@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { LogAction, LogActionType, TravelLog, TravelLogState } from "../types";
+import { LogAction, LogActionType, TravelLogState } from "../types";
 
 const initialState: TravelLogState = [];
 

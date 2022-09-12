@@ -1,4 +1,3 @@
-import { Axios, AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams, Outlet } from "react-router-dom";
 import profile from "../assets/profile.webp";
@@ -27,7 +26,6 @@ const Profile = () => {
       if ((res as any).data.currentUserProfile) setCanEditProfile(true);
       setProfileDetails(res.data.doc);
     } catch (error) {
-      console.log(error);
       setError({ message: (error as any).response?.data.message });
     }
   }, [currentUser]);

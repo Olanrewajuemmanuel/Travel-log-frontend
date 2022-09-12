@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { useCookies, withCookies } from "react-cookie";
+import {  withCookies } from "react-cookie";
 import { Link, Navigate } from "react-router-dom";
 import routes from "../routes";
 import { UserInfo } from "../types";
@@ -75,7 +75,7 @@ const RegisterUser = ({ cookies }: any) => {
 
     axios({
       method: "post",
-      url: "/user/register",
+      url: "api/user/register",
       data: {
         firstName: formData.firstName,
         lastName: formData.lastName,

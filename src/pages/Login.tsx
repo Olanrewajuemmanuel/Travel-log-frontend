@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { ChangeEvent, FormEvent, useReducer, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { withCookies } from "react-cookie";
 import { Link, Navigate } from "react-router-dom";
 import routes from "../routes";
@@ -52,7 +52,7 @@ const Login = ({ cookies }: any) => {
     }
     axios({
       method: "post",
-      url: "/user/login",
+      url: "api/user/login",
       data: {
         userOrEmail: userOrEmail,
         password: password,
